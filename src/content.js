@@ -14,6 +14,7 @@ export const HIGHLIGHTS = [
   { name: 'cdm-3', alt: 'Czech Dance Masters crew' },
   { name: 'dj-stayer-2', alt: 'DJ set in red light' },
   { name: 'gapa-coach', alt: 'Coach during a timeout' },
+  { name: 'gapa-huddle', alt: 'BK GAPA team huddle' },
 ];
 
 export const SERVICES = [

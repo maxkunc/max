@@ -1,7 +1,18 @@
 .intro {
+  /* Photo layout: how many tiles show and how they wrap (see media queries below). */
+  --cols: 8;
+  --rows: 1;
+  --lead-size: clamp(28px, 4vw, 56px);
+  --lead-mt: clamp(64px, 9vw, 140px);
+  --lead-mb: clamp(40px, 5vw, 72px);
+  --pad-b: clamp(20px, 3vw, 36px);
+  /* Height of everything in this section except the photos: top padding, name
+     strip (viewBox is 1000x87), link row, headline + margins, bottom padding. */
+  --fixed: calc(20px + (100vw - 2 * var(--gutter)) * 0.087 + 34px + var(--lead-mt) + var(--lead-mb)
+    + 2 * 0.98 * var(--lead-size) + var(--pad-b) + 8px);
   background: var(--paper);
   color: var(--ink);
-  padding: 20px var(--gutter) clamp(20px, 3vw, 36px);
+  padding: 20px var(--gutter) var(--pad-b);
 }
 /* SVG text with textLength=1000 always spans the full width. */
 .intro__name { display: block; width: 100%; height: auto; overflow: visible; }
@@ -16,7 +27,7 @@
   text-transform: uppercase;
 }
 .intro__lead {
-  margin: clamp(64px, 9vw, 140px) auto clamp(40px, 5vw, 72px);
+  margin: var(--lead-mt) auto var(--lead-mb);
   max-width: 900px;
   text-align: center;
   font-size: clamp(28px, 4vw, 56px);
@@ -25,4 +36,42 @@
   line-height: 0.98;
   text-transform: uppercase;
 }
-.intro__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 6px; }
+.intro__grid {
+  --gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: var(--gap);
+  margin-inline: auto;
+  /* Never wider than what lets every row of 3:4 photos fit on one screen
+     together with the full name, so the whole section is visible at once. */
+  --row-h: calc((100vh - var(--fixed) - (var(--rows) - 1) * var(--gap)) / var(--rows));
+  max-width: max(40%, calc(var(--row-h) * 0.75 * var(--cols) + (var(--cols) - 1) * var(--gap)));
+}
+@supports (height: 100svh) {
+  .intro__grid { --row-h: calc((100svh - var(--fixed) - (var(--rows) - 1) * var(--gap)) / var(--rows)); }
+}
+
+/* Default (desktop, laptop, tablets, open foldables): 8 in one line. */
+.intro__grid > picture:nth-child(n + 9) { display: none; }
+
+/* Phone portrait: 3 x 3 = 9. */
+@media (max-width: 640px) and (max-aspect-ratio: 2/3) {
+  .intro { --cols: 3; --rows: 3; }
+  .intro__grid > picture:nth-child(n + 9) { display: contents; }
+}
+
+/* Short, wide-ish portrait screens (closed foldables): 3 x 2 = 6. */
+@media (max-width: 640px) and (min-aspect-ratio: 2/3) and (max-aspect-ratio: 1/1) {
+  .intro { --cols: 3; --rows: 2; }
+  .intro__grid > picture:nth-child(n + 7) { display: none; }
+}
+
+/* Phone landscape: one line of 7 (6 on narrower phones), tighter headline spacing. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .intro { --cols: 7; --rows: 1; --lead-mt: 20px; --lead-mb: 16px; }
+  .intro__grid > picture:nth-child(n + 8) { display: none; }
+}
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 699px) {
+  .intro { --cols: 6; }
+  .intro__grid > picture:nth-child(n + 7) { display: none; }
+}
