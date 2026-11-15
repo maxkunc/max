@@ -1,0 +1,58 @@
+/* Hero area is at least 16:9 of the viewport width. */
+.hero-wrap { min-height: 56.25vw; display: flex; flex-direction: column; }
+
+.hero {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(40px, 5vw, 120px) clamp(16px, 3vw, 96px) 28px;
+  overflow: hidden;
+}
+.hero__stage { position: relative; margin: auto 0; min-height: max(200px, 30vw); }
+
+.hero__stack {
+  position: absolute;
+  left: 50%;
+  top: -3vw;
+  width: max(150px, 24vw);
+  height: max(200px, 32vw);
+  transform: translateX(-62%);
+}
+.hero__photo { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero__photo--back { transform: rotate(9deg) translate(26px, -8px); }
+.hero__photo--mid { transform: rotate(-5deg) translate(-10px, 6px); }
+.hero__photo--front { object-position: center top; filter: grayscale(1) contrast(1.05); transform: rotate(2deg); }
+
+.hero__title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: max(48px, 11vw);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 0.86;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 0.35em rgba(0, 0, 0, 0.45);
+}
+.hero__line { display: block; }
+.hero__line--1 { padding-left: max(0px, calc(10vw - 30px)); }
+.hero__line--2 { padding-left: max(0px, calc(26vw - 70px)); }
+.hero__line--3 { padding-left: max(0px, calc(42vw - 90px)); }
+
+.hero__meta {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(40px, 4vw, 120px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px 32px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.hero__meta-center { text-align: center; }

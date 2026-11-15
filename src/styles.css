@@ -1,0 +1,32 @@
+/* Design tokens (see design/HANDOFF.md) */
+:root {
+  --bg: #111111;
+  --cream: #ece7d9;
+  --paper: #efebdf;
+  --paper-alt: #f3f1ea;
+  --ink: #141414;
+  --scroll-track: #2a2a2a;
+  --font-sans: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --gutter: clamp(16px, 4vw, 48px);
+  --section-y: clamp(64px, 8vw, 120px);
+  --rule: 1.5px solid currentColor;
+}
+
+body { margin: 0; background: var(--bg); }
+a { color: inherit; text-decoration: none; }
+a:hover { color: inherit; opacity: 0.7; }
+/* <picture> is layout-transparent so the <img> behaves exactly like a bare <img>. */
+picture { display: contents; }
+picture > source { display: none; }
+
+.page {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+.upper { text-transform: uppercase; }
+.mono { font-family: var(--font-mono); }
+.photo { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; }
