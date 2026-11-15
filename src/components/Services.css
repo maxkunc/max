@@ -32,3 +32,11 @@
   text-transform: uppercase;
   text-align: right;
 }
+
+/* Narrow screens: title on its own line, the three tags in one line beneath it,
+   spread across the full width (instead of a stacked column with blank space). */
+@media (max-width: 860px) {
+  .services__row { flex-direction: column; align-items: stretch; gap: 6px; padding-bottom: 6px; }
+  .services__tags { display: flex; justify-content: space-between; gap: 12px; text-align: left; }
+  .services__tags br { display: none; }
+}
