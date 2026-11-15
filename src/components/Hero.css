@@ -1,5 +1,7 @@
-/* Hero area is at least 16:9 of the viewport width. */
-.hero-wrap { min-height: 56.25vw; display: flex; flex-direction: column; }
+/* Hero fills the whole first screen on every device (desktop, tablet, phone).
+   svh = the viewport height with mobile browser toolbars shown, so nothing is
+   hidden behind them on load; 100vh is the fallback for older browsers. */
+.hero-wrap { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
 
 .hero {
   position: relative;

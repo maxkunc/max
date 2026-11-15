@@ -20,7 +20,7 @@ src/
   images.js           build-time AVIF/WebP/JPEG at 400/800/1200 px (vite-imagetools)
   styles.css          design tokens + globals
   components/
-    Hero, Header      hero (≥16:9), stacked photos, scaling title
+    Hero, Header      hero (fills the first screen), stacked photos, scaling title
     Intro             full-width SVG name strip + highlight photo grid
     Services          numbered service rows
     SelectedWork      index list (#work)
