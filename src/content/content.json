@@ -1,7 +1,15 @@
 {
   "hero": {
-    "lines": ["Hello, I’m", "Maxmilian", "Kunc"],
-    "photos": ["dj-stayer-1", "o5-1", "p1-portrait"],
+    "lines": [
+      "Hello, I’m",
+      "Maxmilian",
+      "Kunc"
+    ],
+    "photos": [
+      "dance",
+      "o5-1",
+      "p1-portrait"
+    ],
     "studio": "REDDOS Productions",
     "tagline": "Filmmaker & photographer\nbased in Hradec Králové",
     "year": "©2026"
@@ -10,54 +18,185 @@
     "name": "MAXMILIAN KUNC",
     "lead": "Concerts, festivals\n& live events",
     "photos": [
-      { "photo": "dance", "alt": "Dancers on stage" },
-      { "photo": "o5-1", "alt": "O5 a Radeček concert" },
-      { "photo": "cdm-1", "alt": "Dancer in a spotlight" },
-      { "photo": "dj-stayer-1", "alt": "DJ Stayer on stage" },
-      { "photo": "gapa-1", "alt": "BK GAPA players celebrating" },
-      { "photo": "cdm-3", "alt": "Czech Dance Masters crew" },
-      { "photo": "dj-stayer-2", "alt": "DJ set in red light" },
-      { "photo": "gapa-coach", "alt": "Coach during a timeout" },
-      { "photo": "gapa-huddle", "alt": "BK GAPA team huddle" }
+      {
+        "photo": "dance",
+        "alt": "Dancers on stage"
+      },
+      {
+        "photo": "o5-1",
+        "alt": "O5 a Radeček concert"
+      },
+      {
+        "photo": "cdm-1",
+        "alt": "Dancer in a spotlight"
+      },
+      {
+        "photo": "dj-stayer-1",
+        "alt": "DJ Stayer on stage"
+      },
+      {
+        "photo": "gapa-1",
+        "alt": "BK GAPA players celebrating"
+      },
+      {
+        "photo": "cdm-3",
+        "alt": "Czech Dance Masters crew"
+      },
+      {
+        "photo": "dj-stayer-2",
+        "alt": "DJ set in red light"
+      },
+      {
+        "photo": "gapa-coach",
+        "alt": "Coach during a timeout"
+      },
+      {
+        "photo": "gapa-huddle",
+        "alt": "BK GAPA team huddle"
+      }
     ]
   },
   "services": [
-    { "title": "Event Videography", "tags": ["Concerts", "Festivals", "Live events"] },
-    { "title": "Lifestyle Videography", "tags": ["Short-form", "Brands", "Reels"] },
-    { "title": "Event Photography", "tags": ["Concerts", "Dance", "Portraits"] },
-    { "title": "Sports Videography", "tags": ["Basketball", "Highlights", "Aftermovies"] },
-    { "title": "Edit & Sound", "tags": ["DaVinci Resolve", "Sound design", "Jingles"] },
-    { "title": "Website Creation", "tags": ["Portfolios", "Brand sites", "Design"] }
+    {
+      "title": "Event Videography",
+      "tags": [
+        "Concerts",
+        "Festivals",
+        "Live events"
+      ]
+    },
+    {
+      "title": "Lifestyle Videography",
+      "tags": [
+        "Short-form",
+        "Brands",
+        "Reels"
+      ]
+    },
+    {
+      "title": "Event Photography",
+      "tags": [
+        "Concerts",
+        "Dance",
+        "Portraits"
+      ]
+    },
+    {
+      "title": "Sports Videography",
+      "tags": [
+        "Basketball",
+        "Highlights",
+        "Aftermovies"
+      ]
+    },
+    {
+      "title": "Edit & Sound",
+      "tags": [
+        "DaVinci Resolve",
+        "Sound design",
+        "Jingles"
+      ]
+    },
+    {
+      "title": "Website Creation",
+      "tags": [
+        "Portfolios",
+        "Brand sites",
+        "Design"
+      ]
+    }
   ],
   "work": {
     "tools": "Sony ZV-E10 II · DaVinci Resolve · Adobe Lightroom",
     "base": "Hradec Králové, CZ",
     "items": [
-      { "title": "O5 a Radeček", "tag": "Camera" },
-      { "title": "DJ Stayer", "tag": "Aftermovie" },
-      { "title": "CDM Hradec", "tag": "Photo" },
-      { "title": "BK GAPA", "tag": "Sport" },
-      { "title": "Lunetic", "tag": "Photo" },
-      { "title": "Skatesound", "tag": "Camera + Content" },
-      { "title": "Pizzzza.cz", "tag": "Ad spot" },
-      { "title": "1.SJG", "tag": "Content" }
+      {
+        "title": "O5 a Radeček",
+        "tag": "Camera"
+      },
+      {
+        "title": "DJ Stayer",
+        "tag": "Aftermovie"
+      },
+      {
+        "title": "CDM Hradec",
+        "tag": "Photo"
+      },
+      {
+        "title": "BK GAPA",
+        "tag": "Sport"
+      },
+      {
+        "title": "Lunetic",
+        "tag": "Photo"
+      },
+      {
+        "title": "Skatesound",
+        "tag": "Camera + Content"
+      },
+      {
+        "title": "1.SJG",
+        "tag": "Content"
+      }
     ],
     "cta": "Reach me →"
   },
   "gallery": [
-    { "photo": "o5-1", "alt": "O5 a Radeček concert at O2 Universum", "title": "O5 a Radeček", "count": 2, "mono": false },
-    { "photo": "dj-stayer-1", "alt": "DJ Stayer aftermovie still", "title": "DJ Stayer", "count": 2, "mono": false },
-    { "photo": "cdm-3", "alt": "Czech Dance Masters", "title": "CDM Hradec", "count": 3, "mono": false },
-    { "photo": "gapa-huddle", "alt": "BK GAPA team huddle", "title": "BK GAPA", "count": 3, "mono": false },
-    { "photo": "jump", "alt": "Max Kunc shooting on location", "title": "On location", "count": 2, "mono": true }
+    {
+      "photo": "o5-1",
+      "alt": "O5 a Radeček concert at O2 Universum",
+      "title": "O5 a Radeček",
+      "count": 2,
+      "mono": false
+    },
+    {
+      "photo": "dj-stayer-1",
+      "alt": "DJ Stayer aftermovie still",
+      "title": "DJ Stayer",
+      "count": 2,
+      "mono": false
+    },
+    {
+      "photo": "cdm-3",
+      "alt": "Czech Dance Masters",
+      "title": "CDM Hradec",
+      "count": 3,
+      "mono": false
+    },
+    {
+      "photo": "gapa-huddle",
+      "alt": "BK GAPA team huddle",
+      "title": "BK GAPA",
+      "count": 3,
+      "mono": false
+    },
+    {
+      "photo": "jump",
+      "alt": "Max Kunc shooting on location",
+      "title": "On location",
+      "count": 2,
+      "mono": true
+    }
   ],
   "about": {
     "photo": "o5-2",
     "photoAlt": "Max operating camera in the crowd at O2 Universum",
     "caption": [
-      { "label": "Project:", "value": "O5 a Radeček", "note": "01" },
-      { "label": "Venue:", "value": "O2 Universum", "note": "Prague" },
-      { "label": "Role:", "value": "Camera operator", "note": "Live" }
+      {
+        "label": "Project:",
+        "value": "O5 a Radeček",
+        "note": "01"
+      },
+      {
+        "label": "Venue:",
+        "value": "O2 Universum",
+        "note": "Prague"
+      },
+      {
+        "label": "Role:",
+        "value": "Camera operator",
+        "note": "Live"
+      }
     ],
     "corner": "Bigger stage,\nbigger crowd",
     "heading": "About\nMax Kunc",
@@ -68,11 +207,31 @@
   "contact": {
     "heading": "Let’s work\ntogether",
     "items": [
-      { "label": "Phone", "href": "tel:+420601003311", "text": "+420 601 003 311" },
-      { "label": "Email", "href": "mailto:kunc.maxik@gmail.com", "text": "kunc.maxik@gmail.com" },
-      { "label": "Instagram", "href": "https://instagram.com/max.kunc", "text": "@max.kunc" },
-      { "label": "Studio", "href": "https://reddos.lovable.app", "text": "@REDDOSPRODUCTIONS" }
+      {
+        "label": "Phone",
+        "href": "tel:+420601003311",
+        "text": "+420 601 003 311"
+      },
+      {
+        "label": "Email",
+        "href": "mailto:kunc.maxik@gmail.com",
+        "text": "kunc.maxik@gmail.com"
+      },
+      {
+        "label": "Instagram",
+        "href": "https://instagram.com/max.kunc",
+        "text": "@max.kunc"
+      },
+      {
+        "label": "Studio",
+        "href": "https://instagram.com/reddosproductions",
+        "text": "@REDDOSPRODUCTIONS"
+      }
     ]
   },
-  "footer": { "name": "Max Kunc", "place": "Hradec Králové, CZ", "year": "©2026" }
+  "footer": {
+    "name": "Max Kunc",
+    "place": "Hradec Králové, CZ",
+    "year": "©2026"
+  }
 }
