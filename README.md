@@ -41,7 +41,7 @@ below the fold is `loading="lazy"` with `srcset`/`sizes`.
 
 ## Deploy (GitHub Pages)
 
-`.github/workflows/deploy.yml` builds and publishes on every push to `main`.
+`.github/workflows/deploy.yml` builds and publishes on every push to the default branch.
 One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
 The site URL used for the canonical link and Open Graph tags is `VITE_SITE_URL` in `.env`
