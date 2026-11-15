@@ -14,20 +14,29 @@ npm run preview   # serve dist/
 
 ## Admin (`/admin`)
 
-https://maxkunc.github.io/max/admin/ lets you edit texts, photos, works, services and contacts.
-It isn't connected to a database yet: edits are saved only in your browser.
+https://maxkunc.github.io/max/admin/ edits texts, photos, works, services and contacts.
+It's backed by Supabase (project `gkmodvmafwtuuzsdochu`):
 
-- **Preview** opens the site with your edits (yellow bar at the bottom).
-- **Publish → Download content.json**, replace `src/content/content.json` with it, add any new photos
-  to `src/assets/photos/`, and commit to `main`. The site redeploys automatically.
+- **`site_content`**: one row (`id = 'main'`) holding the whole site as JSON. Everyone can read it;
+  only admins can write it. The public site fetches it on load and falls back to the bundled
+  `src/content/content.json` if Supabase can't be reached.
+- **`admins`**: emails allowed to edit. Add one in the Supabase SQL editor:
+  `insert into public.admins (email) values ('someone@example.com');`
+- **Storage bucket `photos`**: uploads from /admin, saved as `<id>/800.jpg` and `<id>/1600.jpg`
+  and referenced in content as `up:<id>`.
 
-The admin page has no login. It can't change the live site; it only edits a copy in the visitor's browser.
+In /admin: sign in, edit, **Preview** (your unpublished edits, yellow bar), then **Publish**: the
+live site updates immediately, no rebuild needed. **Publish → Backup** downloads or restores the JSON.
+
+Supabase URL + publishable key live in `.env`; they're public by design, and row-level security
+protects writes.
 
 ## Structure
 
 ```
 src/
-  content/content.json  all texts, photo choices, works, services, contacts (edited via /admin)
+  content/content.json  fallback copy of the content (live content is in Supabase)
+  supabase-config.js  Supabase URL/key + uploaded-photo URLs
   admin/              the /admin editor
   images.js           build-time AVIF/WebP/JPEG at 400/800/1200 px (vite-imagetools)
   styles.css          design tokens + globals
@@ -49,7 +58,7 @@ below the fold is `loading="lazy"` with `srcset`/`sizes`.
 ## Adding photos
 
 1. Put the JPEG in `src/assets/photos/` (e.g. `skatesound-1.jpg`).
-2. Pick it in /admin (or reference it by file name, without `.jpg`, in `src/content/content.json`).
+2. Or simply upload it in /admin, no commit needed.
 
 ## Deploy (GitHub Pages)
 

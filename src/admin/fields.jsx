@@ -1,11 +1,14 @@
 import photos, { photoNames } from '../images.js';
+import { isUpload, uploadId, uploadUrl } from '../supabase-config.js';
 
-/** Small thumbnail URL for a photo (built-in: 400px WebP; uploaded: data URL). */
-export function thumb(name, uploads) {
+/** Small thumbnail URL for a photo (built-in: 400px WebP; uploaded: 800px JPEG). */
+export function thumb(name) {
+  if (isUpload(name)) return uploadUrl(name, 800);
   const pic = photos[name];
-  if (pic) return (pic.sources.webp || pic.img.src).split(',')[0].trim().split(' ')[0];
-  return uploads[name] || '';
+  return pic ? (pic.sources.webp || pic.img.src).split(',')[0].trim().split(' ')[0] : '';
 }
+
+export const photoLabel = (name) => (isUpload(name) ? `${uploadId(name)} (uploaded)` : name);
 
 export function Field({ label, value, onChange, multiline, hint, type = 'text' }) {
   return (
@@ -31,16 +34,16 @@ export function Check({ label, value, onChange }) {
 }
 
 export function PhotoSelect({ label = 'Photo', value, onChange, uploads }) {
-  const names = [...photoNames, ...Object.keys(uploads).filter((n) => !photos[n])];
+  const names = [...photoNames, ...uploads];
   return (
     <div className="f f--photo">
       <span className="f__label">{label}</span>
       <div className="photo-select">
-        {value && thumb(value, uploads) ? <img src={thumb(value, uploads)} alt="" /> : <div className="photo-select__empty">?</div>}
+        {value && thumb(value) ? <img src={thumb(value)} alt="" /> : <div className="photo-select__empty">?</div>}
         <select value={value} onChange={(e) => onChange(e.target.value)}>
           {!names.includes(value) && <option value={value}>{value} (missing)</option>}
           {names.map((n) => (
-            <option key={n} value={n}>{n}{photos[n] ? '' : ' (new upload)'}</option>
+            <option key={n} value={n}>{photoLabel(n)}</option>
           ))}
         </select>
       </div>

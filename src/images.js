@@ -10,11 +10,5 @@ const photos = Object.fromEntries(
   Object.entries(modules).map(([path, pic]) => [path.split('/').pop().replace(/\.(jpe?g|png)$/, ''), pic]),
 );
 
-/** Photos added in /admin but not yet committed: { name: dataURL }. Preview only. */
-export const uploads = {};
-export function registerUploads(map) {
-  Object.assign(uploads, map);
-}
-
 export const photoNames = Object.keys(photos).sort();
 export default photos;

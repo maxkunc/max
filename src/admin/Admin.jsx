@@ -1,11 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { published, DRAFT_KEY, readDraft } from '../content/index.js';
-import photos, { photoNames } from '../images.js';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { bundled, DRAFT_KEY, readDraft } from '../content/index.js';
+import { photoNames } from '../images.js';
+import { PHOTO_BUCKET, UPLOAD_PREFIX, isUpload, uploadId } from '../supabase-config.js';
+import { supabase } from './supabase.js';
 import { Field, Check, PhotoSelect, ListEditor, thumb } from './fields.jsx';
 
 const TABS = ['Texts', 'Photos', 'Works', 'Services', 'Contacts', 'Publish'];
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 function setIn(obj, path, value) {
   const next = clone(obj);
   let cur = next;
@@ -22,63 +25,199 @@ function download(name, blob) {
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
-/** Downscale an uploaded image to max 1600px JPEG so it fits in browser storage. */
-function fileToDataUrl(file) {
+/** Resize an image file to a JPEG blob no larger than `max` px on its long side. */
+function resize(img, max) {
+  const scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = document.createElement('canvas');
+  c.width = Math.round(img.naturalWidth * scale);
+  c.height = Math.round(img.naturalHeight * scale);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  return new Promise((resolve) => c.toBlob(resolve, 'image/jpeg', 0.85));
+}
+function loadImage(file) {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.onload = () => {
-      const scale = Math.min(1, 1600 / Math.max(img.width, img.height));
-      const c = document.createElement('canvas');
-      c.width = Math.round(img.width * scale);
-      c.height = Math.round(img.height * scale);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      resolve(c.toDataURL('image/jpeg', 0.85));
-      URL.revokeObjectURL(img.src);
-    };
-    img.onerror = reject;
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error(`${file.name} is not an image this browser can read`));
     img.src = URL.createObjectURL(file);
   });
 }
 
 const slug = (s) => s.toLowerCase().replace(/\.[a-z0-9]+$/, '').normalize('NFD').replace(/[̀-ͯ]/g, '')
-  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'photo';
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'photo';
+
+const when = (iso) => new Date(iso).toLocaleString();
 
 export default function Admin() {
-  const initial = useMemo(() => readDraft(), []);
-  const [content, setContent] = useState(initial?.content || clone(published));
-  const [uploads, setUploads] = useState(initial?.uploads || {});
+  const [session, setSession] = useState(undefined);
+  const [allowed, setAllowed] = useState(undefined);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    setAllowed(undefined);
+    if (!session) return;
+    supabase.rpc('is_admin').then(({ data }) => setAllowed(!!data));
+  }, [session?.user?.id]);
+
+  if (session === undefined || (session && allowed === undefined)) return <div className="gate"><p>Loading…</p></div>;
+  if (!session) return <Login />;
+  if (!allowed) {
+    return (
+      <div className="gate">
+        <div className="gate__box">
+          <h1>No access</h1>
+          <p className="note"><strong>{session.user.email}</strong> isn’t on the list of site editors. Ask the site owner to add it.</p>
+          <button type="button" className="btn" onClick={() => supabase.auth.signOut()}>Sign out</button>
+        </div>
+      </div>
+    );
+  }
+  return <Editor email={session.user.email} />;
+}
+
+function Login() {
+  const [mode, setMode] = useState('in');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [msg, setMsg] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  async function submit(e) {
+    e.preventDefault();
+    setBusy(true);
+    setMsg('');
+    const creds = { email: email.trim(), password };
+    const { data, error } = mode === 'in'
+      ? await supabase.auth.signInWithPassword(creds)
+      : await supabase.auth.signUp({ ...creds, options: { emailRedirectTo: window.location.href } });
+    setBusy(false);
+    if (error) setMsg(error.message);
+    else if (mode === 'up' && !data.session) setMsg('Check your inbox and click the confirmation link, then sign in here.');
+  }
+
+  return (
+    <div className="gate">
+      <form className="gate__box" onSubmit={submit}>
+        <h1>Max Kunc <span>Admin</span></h1>
+        <Field label="Email" type="email" value={email} onChange={setEmail} />
+        <Field label="Password" type="password" value={password} onChange={setPassword} />
+        {msg && <p className="gate__msg">{msg}</p>}
+        <button type="submit" className="btn btn--primary" disabled={busy || !email || password.length < 6}>
+          {mode === 'in' ? 'Sign in' : 'Create account'}
+        </button>
+        <button type="button" className="link" onClick={() => { setMode(mode === 'in' ? 'up' : 'in'); setMsg(''); }}>
+          {mode === 'in' ? 'First time? Create an account' : 'Have an account? Sign in'}
+        </button>
+      </form>
+    </div>
+  );
+}
+
+function Editor({ email }) {
+  const [live, setLive] = useState(null); // { content, updated_at, updated_by }
+  const [content, setContent] = useState(null);
+  const [uploads, setUploads] = useState([]);
   const [tab, setTab] = useState(() => { try { return sessionStorage.getItem('mk-admin-tab') || 'Texts'; } catch { return 'Texts'; } });
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState(null); // { kind: 'ok' | 'error', text }
+  const [busy, setBusy] = useState(false);
   const importRef = useRef(null);
   const uploadRef = useRef(null);
 
-  const dirty = JSON.stringify(content) !== JSON.stringify(published) || Object.keys(uploads).length > 0;
+  const say = (text, kind = 'ok') => setStatus({ text, kind });
 
-  // Autosave the draft in this browser.
+  const loadUploads = useCallback(async () => {
+    const { data, error } = await supabase.storage.from(PHOTO_BUCKET).list('', { limit: 1000, sortBy: { column: 'name', order: 'asc' } });
+    if (error) return say(`Couldn’t list uploaded photos: ${error.message}`, 'error');
+    setUploads(data.filter((d) => d.id === null).map((d) => UPLOAD_PREFIX + d.name));
+  }, []);
+
   useEffect(() => {
+    (async () => {
+      const { data, error } = await supabase.from('site_content').select('content, updated_at, updated_by').eq('id', 'main').maybeSingle();
+      if (error) say(`Couldn’t load the live content: ${error.message}`, 'error');
+      const current = data || { content: bundled, updated_at: null, updated_by: null };
+      setLive(current);
+      const draft = readDraft();
+      setContent(draft?.content || clone(current.content));
+      loadUploads();
+    })();
+  }, [loadUploads]);
+
+  const dirty = !!(live && content && !same(content, live.content));
+
+  // Keep unpublished edits in this browser so nothing is lost on reload.
+  useEffect(() => {
+    if (!content || !live) return;
     try {
-      if (dirty) localStorage.setItem(DRAFT_KEY, JSON.stringify({ content, uploads, savedAt: Date.now() }));
+      if (dirty) localStorage.setItem(DRAFT_KEY, JSON.stringify({ content, savedAt: Date.now() }));
       else localStorage.removeItem(DRAFT_KEY);
-      setStatus('');
-    } catch {
-      setStatus('Browser storage is full: remove some uploaded photos.');
-    }
-  }, [content, uploads, dirty]);
+    } catch { /* storage unavailable: edits still work, just not kept on reload */ }
+  }, [content, live, dirty]);
   useEffect(() => { try { sessionStorage.setItem('mk-admin-tab', tab); } catch { /* ignore */ } }, [tab]);
+
+  if (!content || !live) return <div className="gate"><p>Loading content…</p></div>;
 
   const set = (path) => (value) => setContent((c) => setIn(c, path, value));
   const P = (props) => <PhotoSelect uploads={uploads} {...props} />;
 
+  async function publish() {
+    setBusy(true);
+    const { data, error } = await supabase.from('site_content')
+      .upsert({ id: 'main', content })
+      .select('content, updated_at, updated_by')
+      .single();
+    setBusy(false);
+    if (error) return say(`Publishing failed: ${error.message}`, 'error');
+    setLive(data);
+    say('Published. The live site shows your changes now.');
+  }
+
+  function discard() {
+    if (!confirm('Discard your unpublished changes and go back to what is live?')) return;
+    setContent(clone(live.content));
+    say('Changes discarded.');
+  }
+
   async function onUpload(e) {
     const files = [...e.target.files];
     e.target.value = '';
-    const added = {};
+    if (!files.length) return;
+    setBusy(true);
+    let done = 0;
     for (const f of files) {
-      let name = slug(f.name);
-      while (photos[name] || uploads[name] || added[name]) name += '-2';
-      added[name] = await fileToDataUrl(f);
+      try {
+        say(`Uploading ${f.name}…`);
+        const img = await loadImage(f);
+        const id = `${slug(f.name)}-${Date.now().toString(36)}`;
+        for (const size of [800, 1600]) {
+          const blob = await resize(img, size);
+          const { error } = await supabase.storage.from(PHOTO_BUCKET)
+            .upload(`${id}/${size}.jpg`, blob, { contentType: 'image/jpeg', cacheControl: '31536000' });
+          if (error) throw error;
+        }
+        URL.revokeObjectURL(img.src);
+        done += 1;
+      } catch (err) {
+        say(`Upload of ${f.name} failed: ${err.message}`, 'error');
+      }
     }
-    setUploads((u) => ({ ...u, ...added }));
+    setBusy(false);
+    await loadUploads();
+    if (done) say(`${done} photo${done > 1 ? 's' : ''} uploaded. Choose where to use ${done > 1 ? 'them' : 'it'} below.`);
+  }
+
+  async function deleteUpload(name) {
+    if (!confirm(`Delete ${uploadId(name)} permanently?`)) return;
+    const id = uploadId(name);
+    const { error } = await supabase.storage.from(PHOTO_BUCKET).remove([`${id}/800.jpg`, `${id}/1600.jpg`]);
+    if (error) return say(`Delete failed: ${error.message}`, 'error');
+    await loadUploads();
+    say('Photo deleted.');
   }
 
   function onImport(e) {
@@ -90,22 +229,10 @@ export default function Admin() {
         const data = JSON.parse(t);
         if (!data.hero || !data.intro) throw new Error('not a content file');
         setContent(data);
-        setStatus('Imported.');
+        say('Backup loaded. Check it with Preview, then Publish.');
       } catch (err) {
-        setStatus(`Import failed: ${err.message}`);
+        say(`Import failed: ${err.message}`, 'error');
       }
-    });
-  }
-
-  function discard() {
-    if (!confirm('Discard all unpublished changes and uploaded photos in this browser?')) return;
-    setContent(clone(published));
-    setUploads({});
-  }
-
-  function exportPhotos() {
-    Object.entries(uploads).forEach(([name, dataUrl], i) => {
-      setTimeout(() => fetch(dataUrl).then((r) => r.blob()).then((b) => download(`${name}.jpg`, b)), i * 300);
     });
   }
 
@@ -119,14 +246,20 @@ export default function Admin() {
       <header className="admin__bar">
         <div className="admin__brand">Max Kunc <span>Admin</span></div>
         <div className={`admin__state${dirty ? ' is-dirty' : ''}`}>
-          {dirty ? 'Unpublished changes · saved in this browser' : 'Up to date with the live site'}
+          {dirty ? 'Unpublished changes' : 'Up to date with the live site'}
+          {live.updated_at && <span className="admin__when"> · last published {when(live.updated_at)}{live.updated_by ? ` by ${live.updated_by}` : ''}</span>}
         </div>
         <div className="admin__actions">
           <a className="btn" href="../?preview" target="_blank" rel="noreferrer">Preview</a>
-          <button type="button" className="btn btn--primary" onClick={() => setTab('Publish')}>Publish…</button>
+          <button type="button" className="btn btn--primary" disabled={!dirty || busy} onClick={publish}>{busy ? 'Working…' : 'Publish'}</button>
         </div>
       </header>
-      {status && <div className="admin__status">{status}</div>}
+      {status && (
+        <div className={`admin__status${status.kind === 'error' ? ' is-error' : ''}`}>
+          {status.text}
+          <button type="button" className="link" onClick={() => setStatus(null)}>dismiss</button>
+        </div>
+      )}
 
       <nav className="admin__tabs">
         {TABS.map((t) => (
@@ -192,19 +325,21 @@ export default function Admin() {
 
         {tab === 'Photos' && (
           <>
-            <Card title="Photo library" action={<button type="button" className="btn" onClick={() => uploadRef.current.click()}>Upload photos</button>}>
+            <Card title="Photo library" action={<button type="button" className="btn" disabled={busy} onClick={() => uploadRef.current.click()}>{busy ? 'Uploading…' : 'Upload photos'}</button>}>
               <input ref={uploadRef} type="file" accept="image/*" multiple hidden onChange={onUpload} />
-              <p className="note">Pick these in the sections below. Uploaded photos show on Preview straight away; to put them on the live site, follow the steps under Publish.</p>
+              <p className="note">Uploaded photos are stored online straight away. Pick them in the sections below, then press Publish. Faded photos aren’t used on the site.</p>
               <div className="library">
-                {[...photoNames, ...Object.keys(uploads)].map((n) => (
+                {[...photoNames, ...uploads].map((n) => (
                   <figure key={n} className={usedPhotos.has(n) ? 'is-used' : ''}>
-                    <img src={thumb(n, uploads)} alt="" loading="lazy" />
+                    <img src={thumb(n)} alt="" loading="lazy" />
                     <figcaption>
-                      {n}
-                      {uploads[n] && (
+                      {isUpload(n) ? uploadId(n) : n}
+                      {isUpload(n) && (
                         <>
-                          <em>new</em>
-                          <button type="button" className="link danger" onClick={() => setUploads(({ [n]: _, ...rest }) => rest)}>remove</button>
+                          <em>uploaded</em>
+                          {!usedPhotos.has(n) && (
+                            <button type="button" className="link danger" onClick={() => deleteUpload(n)}>delete</button>
+                          )}
                         </>
                       )}
                     </figcaption>
@@ -321,31 +456,30 @@ export default function Admin() {
         )}
 
         {tab === 'Publish' && (
-          <Card title="Publish your changes">
-            <p className="note">
-              The admin isn’t connected to a database yet, so changes are saved only in this browser.
-              Use <strong>Preview</strong> to check them, then publish them by updating the repository:
-            </p>
-            <ol className="steps">
-              <li>
-                <button type="button" className="btn btn--primary" onClick={() => download('content.json', new Blob([JSON.stringify(content, null, 2) + '\n'], { type: 'application/json' }))}>Download content.json</button>
-                <span>Replace <code>src/content/content.json</code> in the repository with it.</span>
-              </li>
-              {Object.keys(uploads).length > 0 && (
-                <li>
-                  <button type="button" className="btn" onClick={exportPhotos}>Download {Object.keys(uploads).length} new photo(s)</button>
-                  <span>Add them to <code>src/assets/photos/</code> without renaming.</span>
-                </li>
-              )}
-              <li><span>Commit to <code>main</code>. The site rebuilds and goes live in about a minute.</span></li>
-              <li><span>Then click <strong>Discard draft</strong> below so this browser shows the live content again.</span></li>
-            </ol>
-            <div className="row">
-              <button type="button" className="btn" onClick={() => importRef.current.click()}>Import content.json</button>
-              <input ref={importRef} type="file" accept="application/json,.json" hidden onChange={onImport} />
-              <button type="button" className="btn btn--danger" disabled={!dirty} onClick={discard}>Discard draft</button>
-            </div>
-          </Card>
+          <>
+            <Card title="Publish">
+              <p className="note">
+                {dirty ? 'You have changes that aren’t live yet.' : 'Everything you see here is live.'}{' '}
+                Check them with <strong>Preview</strong>, then press <strong>Publish</strong>: the site updates immediately for everyone.
+              </p>
+              <div className="row">
+                <button type="button" className="btn btn--primary" disabled={!dirty || busy} onClick={publish}>Publish now</button>
+                <button type="button" className="btn btn--danger" disabled={!dirty} onClick={discard}>Discard changes</button>
+              </div>
+            </Card>
+            <Card title="Backup">
+              <p className="note">Save a copy of all texts and photo choices as a file, or restore one.</p>
+              <div className="row">
+                <button type="button" className="btn" onClick={() => download('content.json', new Blob([JSON.stringify(content, null, 2) + '\n'], { type: 'application/json' }))}>Download backup</button>
+                <button type="button" className="btn" onClick={() => importRef.current.click()}>Restore from file</button>
+                <input ref={importRef} type="file" accept="application/json,.json" hidden onChange={onImport} />
+              </div>
+            </Card>
+            <Card title="Account">
+              <p className="note">Signed in as <strong>{email}</strong>.</p>
+              <div className="row"><button type="button" className="btn" onClick={() => supabase.auth.signOut()}>Sign out</button></div>
+            </Card>
+          </>
         )}
       </main>
     </div>

@@ -1,5 +1,5 @@
-import published from './content.json';
-import { registerUploads } from '../images.js';
+import bundled from './content.json';
+import { SB_URL, SB_KEY } from '../supabase-config.js';
 
 export const DRAFT_KEY = 'mk-admin-draft';
 
@@ -15,16 +15,33 @@ export function readDraft() {
   }
 }
 
-/** Published content, or the admin's unsaved draft when previewing. */
-export function loadContent() {
-  if (isPreview) {
-    const draft = readDraft();
-    if (draft?.content) {
-      registerUploads(draft.uploads || {});
-      return draft.content;
-    }
+/** Live content from Supabase; null if unreachable (then the bundled copy is used). */
+export async function fetchLiveContent(timeoutMs = 3000) {
+  if (!SB_URL || !SB_KEY) return null;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(`${SB_URL}/rest/v1/site_content?id=eq.main&select=content`, {
+      headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` },
+      signal: ctrl.signal,
+    });
+    if (!res.ok) return null;
+    const rows = await res.json();
+    return rows[0]?.content || null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
   }
-  return published;
 }
 
-export { published };
+/** Content to render: the admin's draft when previewing, else live, else bundled fallback. */
+export async function loadContent() {
+  if (isPreview) {
+    const draft = readDraft();
+    if (draft?.content) return draft.content;
+  }
+  return (await fetchLiveContent()) || bundled;
+}
+
+export { bundled };

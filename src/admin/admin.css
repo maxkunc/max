@@ -95,3 +95,14 @@ a.btn { color: inherit; }
 .steps li { padding-left: 4px; }
 .steps li > * { vertical-align: middle; }
 .steps .btn { margin-right: 10px; }
+
+.admin__when { opacity: 0.6; color: var(--cream); }
+.admin__status { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.admin__status.is-error { background: var(--danger); color: #fff; }
+
+.gate { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: var(--bg); color: var(--cream); }
+.gate__box { width: min(380px, 100%); display: grid; gap: 14px; background: var(--paper); color: var(--ink); padding: 28px; }
+.gate h1 { margin: 0 0 6px; font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.03em; }
+.gate h1 span { font-weight: 500; opacity: 0.55; }
+.gate__msg { margin: 0; font-size: 14px; color: var(--danger); }
+.gate .link { justify-self: start; font-size: 13px; }

@@ -1,4 +1,5 @@
-import photos, { uploads } from '../images.js';
+import photos from '../images.js';
+import { isUpload, uploadUrl } from '../supabase-config.js';
 
 const MIME = { avif: 'image/avif', webp: 'image/webp' };
 
@@ -8,30 +9,22 @@ const MIME = { avif: 'image/avif', webp: 'image/webp' };
  * Images are lazy unless `priority` is set (hero only).
  */
 export default function Picture({ name, alt = '', sizes, className, priority = false, onLoad }) {
-  const pic = photos[name];
   const loading = priority ? 'eager' : 'lazy';
-  if (!pic) {
-    // Admin preview of a photo that only exists in the browser so far.
-    if (uploads[name]) return <img src={uploads[name]} alt={alt} className={className} loading={loading} onLoad={onLoad} />;
-    return null;
+  const common = { alt, className, sizes, loading, onLoad, decoding: priority ? 'sync' : 'async', fetchPriority: priority ? 'high' : undefined };
+
+  // Photo uploaded from /admin (Supabase Storage, 800 + 1600 px JPEGs).
+  if (isUpload(name)) {
+    return <img src={uploadUrl(name, 1600)} srcSet={`${uploadUrl(name, 800)} 800w, ${uploadUrl(name, 1600)} 1600w`} {...common} />;
   }
+
+  const pic = photos[name];
+  if (!pic) return null;
   return (
     <picture>
       {Object.entries(pic.sources).map(([format, srcSet]) => (
         <source key={format} type={MIME[format]} srcSet={srcSet} sizes={sizes} />
       ))}
-      <img
-        src={pic.img.src}
-        width={pic.img.w}
-        height={pic.img.h}
-        alt={alt}
-        className={className}
-        sizes={sizes}
-        loading={loading}
-        decoding={priority ? 'sync' : 'async'}
-        fetchPriority={priority ? 'high' : undefined}
-        onLoad={onLoad}
-      />
+      <img src={pic.img.src} width={pic.img.w} height={pic.img.h} {...common} />
     </picture>
   );
 }
