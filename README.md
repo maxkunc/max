@@ -12,11 +12,23 @@ npm run build     # static site in dist/
 npm run preview   # serve dist/
 ```
 
+## Admin (`/admin`)
+
+https://maxkunc.github.io/max/admin/ lets you edit texts, photos, works, services and contacts.
+It isn't connected to a database yet: edits are saved only in your browser.
+
+- **Preview** opens the site with your edits (yellow bar at the bottom).
+- **Publish → Download content.json**, replace `src/content/content.json` with it, add any new photos
+  to `src/assets/photos/`, and commit to `main`. The site redeploys automatically.
+
+The admin page has no login. It can't change the live site; it only edits a copy in the visitor's browser.
+
 ## Structure
 
 ```
 src/
-  content.js          all copy: nav, services, work list, gallery, contacts
+  content/content.json  all texts, photo choices, works, services, contacts (edited via /admin)
+  admin/              the /admin editor
   images.js           build-time AVIF/WebP/JPEG at 400/800/1200 px (vite-imagetools)
   styles.css          design tokens + globals
   components/
@@ -37,7 +49,7 @@ below the fold is `loading="lazy"` with `srcset`/`sizes`.
 ## Adding photos
 
 1. Put the JPEG in `src/assets/photos/` (e.g. `skatesound-1.jpg`).
-2. Reference it by file name (without `.jpg`) in `src/content.js` — `HIGHLIGHTS` or `GALLERY`.
+2. Pick it in /admin (or reference it by file name, without `.jpg`, in `src/content/content.json`).
 
 ## Deploy (GitHub Pages)
 

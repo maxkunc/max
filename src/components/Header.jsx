@@ -1,10 +1,16 @@
-import { NAV } from '../content.js';
 import './Header.css';
 
-export default function Header() {
+export const NAV = [
+  { href: '#work', label: 'Work' },
+  { href: '#services', label: 'Services' },
+  { href: '#about', label: 'About' },
+  { href: '#contact', label: 'Contact' },
+];
+
+export default function Header({ name }) {
   return (
     <header className="site-header">
-      <a href="#top">Max Kunc</a>
+      <a href="#top">{name}</a>
       <nav aria-label="Main" className="site-header__nav">
         {NAV.map((l) => <a key={l.href} href={l.href}>{l.label}</a>)}
       </nav>

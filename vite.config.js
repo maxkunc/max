@@ -7,4 +7,9 @@ import { imagetools } from 'vite-imagetools';
 export default defineConfig({
   base: './',
   plugins: [react(), imagetools()],
+  build: {
+    rollupOptions: {
+      input: { main: 'index.html', admin: 'admin/index.html' },
+    },
+  },
 });

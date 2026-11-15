@@ -1,4 +1,4 @@
-import photos from '../images.js';
+import photos, { uploads } from '../images.js';
 
 const MIME = { avif: 'image/avif', webp: 'image/webp' };
 
@@ -7,9 +7,14 @@ const MIME = { avif: 'image/avif', webp: 'image/webp' };
  * `picture` is `display: contents`, so the <img> lays out exactly as a bare <img>.
  * Images are lazy unless `priority` is set (hero only).
  */
-export default function Picture({ name, alt = '', sizes, className, priority = false }) {
+export default function Picture({ name, alt = '', sizes, className, priority = false, onLoad }) {
   const pic = photos[name];
-  if (!pic) throw new Error(`Unknown photo: ${name}`);
+  const loading = priority ? 'eager' : 'lazy';
+  if (!pic) {
+    // Admin preview of a photo that only exists in the browser so far.
+    if (uploads[name]) return <img src={uploads[name]} alt={alt} className={className} loading={loading} onLoad={onLoad} />;
+    return null;
+  }
   return (
     <picture>
       {Object.entries(pic.sources).map(([format, srcSet]) => (
@@ -22,9 +27,10 @@ export default function Picture({ name, alt = '', sizes, className, priority = f
         alt={alt}
         className={className}
         sizes={sizes}
-        loading={priority ? 'eager' : 'lazy'}
+        loading={loading}
         decoding={priority ? 'sync' : 'async'}
         fetchPriority={priority ? 'high' : undefined}
+        onLoad={onLoad}
       />
     </picture>
   );

@@ -1,11 +1,10 @@
-import { GALLERY } from '../content.js';
 import Picture from './Picture.jsx';
 import './Gallery.css';
 
 const CARD_SIZES = '(max-width: 1000px) 220px, (max-width: 1364px) 22vw, 300px';
 const pad = (n) => String(n).padStart(2, '0');
 
-export default function Gallery() {
+export default function Gallery({ gallery }) {
   return (
     <section className="gallery" aria-label="Projects gallery">
       <div className="gallery__head">
@@ -13,10 +12,10 @@ export default function Gallery() {
         <div>Scroll →</div>
       </div>
       <div className="gallery__track">
-        {GALLERY.map((g) => (
-          <div key={g.name} className="gallery__card">
+        {gallery.map((g, i) => (
+          <div key={`${g.photo}-${i}`} className="gallery__card">
             <Picture
-              name={g.name}
+              name={g.photo}
               alt={g.alt}
               className={g.mono ? 'photo gallery__photo--mono' : 'photo'}
               sizes={CARD_SIZES}

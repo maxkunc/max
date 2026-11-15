@@ -1,11 +1,11 @@
 import './Footer.css';
 
-export default function Footer() {
+export default function Footer({ footer }) {
   return (
     <footer className="site-footer">
-      <div>Max Kunc</div>
-      <div>Hradec Králové, CZ</div>
-      <div>©2026</div>
+      <div>{footer.name}</div>
+      <div>{footer.place}</div>
+      <div>{footer.year}</div>
     </footer>
   );
 }
