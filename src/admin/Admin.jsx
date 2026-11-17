@@ -280,7 +280,7 @@ function Editor({ email }) {
                 {content.hero.lines.map((l, i) => <Field key={i} label={`Title line ${i + 1}`} value={l} onChange={set(['hero', 'lines', i])} />)}
               </div>
               <div className="grid3">
-                <Field label="Left" value={content.hero.studio} onChange={set(['hero', 'studio'])} />
+                <Field label="Left" multiline value={content.hero.studio} onChange={set(['hero', 'studio'])} />
                 <Field label="Centre" multiline value={content.hero.tagline} onChange={set(['hero', 'tagline'])} />
                 <Field label="Right" value={content.hero.year} onChange={set(['hero', 'year'])} />
               </div>

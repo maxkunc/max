@@ -45,7 +45,7 @@ export default function Hero({ hero, siteName }) {
           </h1>
         </div>
         <div className="hero__meta">
-          <div>{hero.studio}</div>
+          <div><Lines text={hero.studio} /></div>
           <div className="hero__meta-center"><Lines text={hero.tagline} /></div>
           <div>{hero.year}</div>
         </div>

@@ -76,7 +76,7 @@
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   grid-template-areas: 'left center right';
   align-items: end;
-  gap: 16px 32px;
+  gap: 16px clamp(12px, 3vw, 32px);
   font-size: 12px;
   font-weight: 500;
   line-height: 1.2;
@@ -86,8 +86,8 @@
 .hero__meta-center { grid-area: center; text-align: center; }
 .hero__meta > :last-child { grid-area: right; text-align: right; }
 
-/* Phones: centred tagline on its own line, studio and year below it. */
-@media (max-width: 600px) {
+/* Very narrow phones: centred tagline on its own line, studio and year below it. */
+@media (max-width: 389px) {
   .hero__meta {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas: 'center center' 'left right';
