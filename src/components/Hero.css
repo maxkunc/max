@@ -71,14 +71,25 @@
   position: relative;
   z-index: 2;
   padding-top: clamp(40px, 4vw, 120px);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
+  /* Left / centre / right: equal side columns keep the middle text centred on the screen. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: 'left center right';
+  align-items: end;
   gap: 16px 32px;
   font-size: 12px;
   font-weight: 500;
   line-height: 1.2;
   text-transform: uppercase;
 }
-.hero__meta-center { text-align: center; }
+.hero__meta > :first-child { grid-area: left; }
+.hero__meta-center { grid-area: center; text-align: center; }
+.hero__meta > :last-child { grid-area: right; text-align: right; }
+
+/* Phones: centred tagline on its own line, studio and year below it. */
+@media (max-width: 600px) {
+  .hero__meta {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: 'center center' 'left right';
+  }
+}
