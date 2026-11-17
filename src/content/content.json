@@ -1,5 +1,6 @@
 {
   "hero": {
+    "year": "©2026",
     "lines": [
       "Hello, I’m",
       "Maxmilian",
@@ -11,227 +12,375 @@
       "p1-portrait"
     ],
     "studio": "REDDOS Productions",
-    "tagline": "Filmmaker & photographer\nbased in Hradec Králové",
-    "year": "©2026"
+    "tagline": "Filmmaker & photographer\nbased in Hradec Králové"
   },
-  "intro": {
-    "name": "MAXMILIAN KUNC",
-    "lead": "Concerts, festivals\n& live events",
-    "photos": [
-      {
-        "photo": "dance",
-        "alt": "Dancers on stage"
-      },
-      {
-        "photo": "o5-1",
-        "alt": "O5 a Radeček concert"
-      },
-      {
-        "photo": "cdm-1",
-        "alt": "Dancer in a spotlight"
-      },
-      {
-        "photo": "dj-stayer-1",
-        "alt": "DJ Stayer on stage"
-      },
-      {
-        "photo": "gapa-1",
-        "alt": "BK GAPA players celebrating"
-      },
-      {
-        "photo": "cdm-3",
-        "alt": "Czech Dance Masters crew"
-      },
-      {
-        "photo": "dj-stayer-2",
-        "alt": "DJ set in red light"
-      },
-      {
-        "photo": "gapa-coach",
-        "alt": "Coach during a timeout"
-      },
-      {
-        "photo": "gapa-huddle",
-        "alt": "BK GAPA team huddle"
-      }
-    ]
-  },
-  "services": [
-    {
-      "title": "Event Videography",
-      "tags": [
-        "Concerts",
-        "Festivals",
-        "Live events"
-      ]
-    },
-    {
-      "title": "Lifestyle Videography",
-      "tags": [
-        "Short-form",
-        "Brands",
-        "Reels"
-      ]
-    },
-    {
-      "title": "Event Photography",
-      "tags": [
-        "Concerts",
-        "Dance",
-        "Portraits"
-      ]
-    },
-    {
-      "title": "Sports Videography",
-      "tags": [
-        "Basketball",
-        "Highlights",
-        "Aftermovies"
-      ]
-    },
-    {
-      "title": "Edit & Sound",
-      "tags": [
-        "DaVinci Resolve",
-        "Sound design",
-        "Jingles"
-      ]
-    },
-    {
-      "title": "Website Creation",
-      "tags": [
-        "Portfolios",
-        "Brand sites",
-        "Design"
-      ]
-    }
-  ],
   "work": {
-    "tools": "Sony ZV-E10 II · DaVinci Resolve · Adobe Lightroom",
+    "cta": "Reach me →",
     "base": "Hradec Králové, CZ",
     "items": [
       {
+        "tag": "Camera",
         "title": "O5 a Radeček",
-        "tag": "Camera"
+        "role": "Camera operator",
+        "date": "14.2.2026",
+        "place": "O2 Universum, Prague",
+        "description": "Camera operator at the O5 a Radeček concert at O2 Universum in Prague on 14.2.2026.",
+        "photos": [
+          {
+            "photo": "o5-1",
+            "alt": "O5 a Radeček concert at O2 Universum"
+          },
+          {
+            "photo": "o5-2",
+            "alt": "Max operating camera in the crowd at O2 Universum"
+          }
+        ]
       },
       {
+        "tag": "Aftermovie",
         "title": "DJ Stayer",
-        "tag": "Aftermovie"
+        "role": "Video editor",
+        "description": "Editor of an aftermovie for DJ Stayer, a well-known CZ/SK DJ.",
+        "photos": [
+          {
+            "photo": "dj-stayer-1",
+            "alt": "DJ Stayer on stage"
+          },
+          {
+            "photo": "dj-stayer-2",
+            "alt": "DJ set in red light"
+          }
+        ]
       },
       {
+        "tag": "Photo",
         "title": "CDM Hradec",
-        "tag": "Photo"
+        "role": "Photographer & photo editor",
+        "client": "T-BASS",
+        "date": "24.5.2026",
+        "place": "Aldis, Hradec Králové",
+        "description": "Photographer and photo editor for T-BASS, the organizer of Czech Dance Masters in Hradec Králové, held at Aldis on 24.5.2026.",
+        "photos": [
+          {
+            "photo": "cdm-1",
+            "alt": "Dancer in a spotlight at Czech Dance Masters"
+          },
+          {
+            "photo": "cdm-3",
+            "alt": "Czech Dance Masters crew"
+          }
+        ]
       },
       {
-        "title": "BK GAPA",
-        "tag": "Sport"
+        "tag": "Sport",
+        "title": "BK GAPA"
       },
       {
+        "tag": "Photo",
         "title": "Lunetic",
-        "tag": "Photo"
+        "role": "Photographer",
+        "date": "2.10.2026",
+        "place": "O2 Universum, Prague",
+        "description": "Photographer at the Lunetic concert at O2 Universum in Prague — capturing the band and the crowd at arena scale.",
+        "photos": [
+          {
+            "photo": "lunetic-1-stage",
+            "alt": "Lunetic performing with dancers on stage at O2 Universum"
+          },
+          {
+            "photo": "lunetic-2-crowd",
+            "alt": "Lunetic fans in the crowd at O2 Universum"
+          },
+          {
+            "photo": "lunetic-3-guitarist",
+            "alt": "Guitarist in orange stage light at the Lunetic concert"
+          },
+          {
+            "photo": "lunetic-4-dancers",
+            "alt": "Dancers on stage during the Lunetic concert"
+          }
+        ]
       },
       {
+        "tag": "Camera + Content",
         "title": "Skatesound",
-        "tag": "Camera + Content"
+        "role": "Camera + content",
+        "date": "22.–23.5.2026",
+        "place": "Ulrichovo náměstí, Hradec Králové",
+        "description": "Camera operator and content creator for Skatesound in Hradec Králové — filming the event and producing content for its socials.",
+        "photos": [
+          {
+            "photo": "skatesound-1-ramp",
+            "alt": "Skateboarder in the air above the ramp at Skatesound"
+          },
+          {
+            "photo": "skatesound-2-interview",
+            "alt": "Interview with a rider at Skatesound"
+          }
+        ]
       },
       {
-        "title": "1.SJG",
-        "tag": "Content"
+        "tag": "Content",
+        "title": "1.SJG"
+      },
+      {
+        "title": "T-BASS",
+        "tag": "Photo",
+        "role": "Photographer",
+        "date": "19.9.2026 (Streetmania)",
+        "place": "Hradec Králové",
+        "description": "A photographer for T-BASS in Hradec Králové — from their stage shows to the Streetmania concert at Futurum. Events: dance show, Streetmania on the Futurum roof.",
+        "photos": [
+          {
+            "photo": "tbass-1-dance-show",
+            "alt": "Crowd at a T-BASS dance show"
+          },
+          {
+            "photo": "tbass-2-streetmania",
+            "alt": "Performer on stage at Streetmania on the Futurum roof"
+          }
+        ]
+      },
+      {
+        "title": "Popstar Tea × Section",
+        "tag": "Photo",
+        "role": "Photographer",
+        "date": "2.5.2026",
+        "place": "Žižkovská věž, Prague",
+        "description": "A photoshoot of the Popstar Tea × Section event at Žižkovská věž in Prague — the guests, the merch and the pink takeover.",
+        "photos": [
+          {
+            "photo": "popstar-1-signing",
+            "alt": "Guest in a pink towel signing at Popstar Tea × Section"
+          },
+          {
+            "photo": "popstar-2-carton",
+            "alt": "Signing a pink Popstar Tea carton"
+          },
+          {
+            "photo": "popstar-3-porsche",
+            "alt": "Pink Porsche at Popstar Tea × Section, Žižkovská věž"
+          }
+        ]
       }
     ],
-    "cta": "Reach me →"
+    "tools": "Sony ZV-E10 II · DaVinci Resolve · Adobe Lightroom"
   },
-  "gallery": [
-    {
-      "photo": "o5-1",
-      "alt": "O5 a Radeček concert at O2 Universum",
-      "title": "O5 a Radeček",
-      "count": 2,
-      "mono": false
-    },
-    {
-      "photo": "dj-stayer-1",
-      "alt": "DJ Stayer aftermovie still",
-      "title": "DJ Stayer",
-      "count": 2,
-      "mono": false
-    },
-    {
-      "photo": "cdm-3",
-      "alt": "Czech Dance Masters",
-      "title": "CDM Hradec",
-      "count": 3,
-      "mono": false
-    },
-    {
-      "photo": "gapa-huddle",
-      "alt": "BK GAPA team huddle",
-      "title": "BK GAPA",
-      "count": 3,
-      "mono": false
-    },
-    {
-      "photo": "jump",
-      "alt": "Max Kunc shooting on location",
-      "title": "On location",
-      "count": 2,
-      "mono": true
-    }
-  ],
   "about": {
+    "role": "Filmmaker, photographer\n& designer",
     "photo": "o5-2",
-    "photoAlt": "Max operating camera in the crowd at O2 Universum",
+    "quote": "With a strong eye for atmosphere, movement and storytelling, I capture the moments that make events memorable.",
+    "corner": "Bigger stage,\nbigger crowd",
+    "studio": "Studio:\nREDDOS Productions",
     "caption": [
       {
+        "note": "01",
         "label": "Project:",
-        "value": "O5 a Radeček",
-        "note": "01"
+        "value": "O5 a Radeček"
       },
       {
+        "note": "Prague",
         "label": "Venue:",
-        "value": "O2 Universum",
-        "note": "Prague"
+        "value": "O2 Universum"
       },
       {
+        "note": "Live",
         "label": "Role:",
-        "value": "Camera operator",
-        "note": "Live"
+        "value": "Camera operator"
       }
     ],
-    "corner": "Bigger stage,\nbigger crowd",
     "heading": "About\nMax Kunc",
-    "studio": "Studio:\nREDDOS Productions",
-    "role": "Filmmaker, photographer\n& designer",
-    "quote": "With a strong eye for atmosphere, movement and storytelling, I capture the moments that make events memorable."
+    "photoAlt": "Max operating camera in the crowd at O2 Universum"
   },
-  "contact": {
-    "heading": "Let’s work\ntogether",
-    "items": [
+  "intro": {
+    "lead": "Concerts, festivals\n& live events",
+    "name": "MAXMILIAN KUNC",
+    "photos": [
       {
-        "label": "Phone",
-        "href": "tel:+420601003311",
-        "text": "+420 601 003 311"
+        "alt": "Dancers on stage",
+        "photo": "dance"
       },
       {
-        "label": "Email",
-        "href": "mailto:kunc.maxik@gmail.com",
-        "text": "kunc.maxik@gmail.com"
+        "alt": "O5 a Radeček concert",
+        "photo": "o5-1"
       },
       {
-        "label": "Instagram",
-        "href": "https://instagram.com/max.kunc",
-        "text": "@max.kunc"
+        "alt": "Dancer in a spotlight",
+        "photo": "cdm-1"
       },
       {
-        "label": "Studio",
-        "href": "https://instagram.com/reddosproductions",
-        "text": "@REDDOSPRODUCTIONS"
+        "alt": "DJ Stayer on stage",
+        "photo": "dj-stayer-1"
+      },
+      {
+        "alt": "BK GAPA players celebrating",
+        "photo": "gapa-1"
+      },
+      {
+        "alt": "Czech Dance Masters crew",
+        "photo": "cdm-3"
+      },
+      {
+        "alt": "DJ set in red light",
+        "photo": "dj-stayer-2"
+      },
+      {
+        "alt": "Coach during a timeout",
+        "photo": "gapa-coach"
+      },
+      {
+        "alt": "BK GAPA team huddle",
+        "photo": "gapa-huddle"
       }
     ]
   },
   "footer": {
     "name": "Max Kunc",
-    "place": "Hradec Králové, CZ",
-    "year": "©2026"
-  }
+    "year": "©2026",
+    "place": "Hradec Králové, CZ"
+  },
+  "contact": {
+    "items": [
+      {
+        "href": "mailto:kunc.maxik@gmail.com",
+        "text": "kunc.maxik@gmail.com",
+        "label": "Email"
+      },
+      {
+        "href": "https://instagram.com/max.kunc",
+        "text": "@max.kunc",
+        "label": "Instagram"
+      },
+      {
+        "href": "https://instagram.com/reddosproductions",
+        "text": "@REDDOSPRODUCTIONS",
+        "label": "Studio"
+      }
+    ],
+    "heading": "Let’s work\ntogether",
+    "photo": "contact-portrait",
+    "photoAlt": "Portrait of Max Kunc"
+  },
+  "gallery": [
+    {
+      "alt": "O5 a Radeček concert at O2 Universum",
+      "mono": false,
+      "count": 2,
+      "photo": "o5-1",
+      "title": "O5 a Radeček",
+      "project": "O5 a Radeček"
+    },
+    {
+      "alt": "DJ Stayer aftermovie still",
+      "mono": false,
+      "count": 2,
+      "photo": "dj-stayer-1",
+      "title": "DJ Stayer",
+      "project": "DJ Stayer"
+    },
+    {
+      "alt": "Czech Dance Masters",
+      "mono": false,
+      "count": 3,
+      "photo": "cdm-3",
+      "title": "CDM Hradec",
+      "project": "CDM Hradec"
+    },
+    {
+      "alt": "BK GAPA team huddle",
+      "mono": false,
+      "count": 3,
+      "photo": "gapa-huddle",
+      "title": "BK GAPA"
+    },
+    {
+      "photo": "lunetic-3-guitarist",
+      "alt": "Guitarist in orange stage light at the Lunetic concert",
+      "title": "Lunetic",
+      "count": 4,
+      "mono": false,
+      "project": "Lunetic"
+    },
+    {
+      "photo": "skatesound-2-interview",
+      "alt": "Interview with a rider at Skatesound",
+      "title": "Skatesound",
+      "count": 2,
+      "mono": false,
+      "project": "Skatesound"
+    },
+    {
+      "photo": "tbass-2-streetmania",
+      "alt": "Performer on stage at Streetmania on the Futurum roof",
+      "title": "T-BASS",
+      "count": 2,
+      "mono": false,
+      "project": "T-BASS"
+    },
+    {
+      "photo": "popstar-3-porsche",
+      "alt": "Pink Porsche at Popstar Tea × Section, Žižkovská věž",
+      "title": "Popstar Tea × Section",
+      "count": 3,
+      "mono": false,
+      "project": "Popstar Tea × Section"
+    },
+    {
+      "alt": "Max Kunc shooting on location",
+      "mono": true,
+      "count": 2,
+      "photo": "jump",
+      "title": "On location"
+    }
+  ],
+  "services": [
+    {
+      "tags": [
+        "Concerts",
+        "Festivals",
+        "Live events"
+      ],
+      "title": "Event Videography"
+    },
+    {
+      "tags": [
+        "Short-form",
+        "Brands",
+        "Reels"
+      ],
+      "title": "Lifestyle Videography"
+    },
+    {
+      "tags": [
+        "Concerts",
+        "Dance",
+        "Portraits"
+      ],
+      "title": "Event Photography"
+    },
+    {
+      "tags": [
+        "Basketball",
+        "Highlights",
+        "Aftermovies"
+      ],
+      "title": "Sports Videography"
+    },
+    {
+      "tags": [
+        "DaVinci Resolve",
+        "Sound design",
+        "Jingles"
+      ],
+      "title": "Edit & Sound"
+    },
+    {
+      "tags": [
+        "Portfolios",
+        "Brand sites",
+        "Design"
+      ],
+      "title": "Website Creation"
+    }
+  ]
 }

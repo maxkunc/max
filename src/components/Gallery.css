@@ -46,3 +46,13 @@
   line-height: 0.85;
   text-transform: uppercase;
 }
+.gallery__card--link {
+  display: block;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.gallery__card--link:hover { opacity: 0.7; }

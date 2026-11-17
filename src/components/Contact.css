@@ -23,3 +23,28 @@
   font-weight: 800;
   overflow-wrap: anywhere;
 }
+.contact__link--address { text-transform: none; }
+
+/* Portrait next to the contact block (below the heading on phones). */
+.contact__layout.has-photo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'intro photo' 'grid photo';
+  column-gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+.contact__intro { grid-area: intro; }
+.contact__layout.has-photo .contact__grid { grid-area: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+.contact__portrait { grid-area: photo; width: clamp(200px, 24vw, 380px); align-self: end; }
+.contact__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+}
+@media (max-width: 760px) {
+  .contact__layout.has-photo { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'intro' 'photo' 'grid'; }
+  .contact__portrait { width: min(280px, 70%); margin-top: clamp(32px, 6vw, 48px); align-self: start; }
+}

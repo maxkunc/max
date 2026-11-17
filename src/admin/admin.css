@@ -106,3 +106,8 @@ a.btn { color: inherit; }
 .gate h1 span { font-weight: 500; opacity: 0.55; }
 .gate__msg { margin: 0; font-size: 14px; color: var(--danger); }
 .gate .link { justify-self: start; font-size: 13px; }
+
+.more { display: grid; gap: 10px; }
+.more > summary { cursor: pointer; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.more[open] > summary { margin-bottom: 4px; }
+.more .list__item { background: var(--paper); }

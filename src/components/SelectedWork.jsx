@@ -1,8 +1,9 @@
+import { hasDetails } from './ProjectDialog.jsx';
 import './SelectedWork.css';
 
 const num = (n) => String(n).padStart(4, '0');
 
-export default function SelectedWork({ work }) {
+export default function SelectedWork({ work, onOpen }) {
   return (
     <section id="work" className="work">
       <div className="work__intro">
@@ -19,7 +20,13 @@ export default function SelectedWork({ work }) {
         {work.items.map((w, i) => (
           <li key={i} className="work__item">
             <span className="num work__num">{num(i + 1)}</span>
-            <span className="work__title">{w.title}</span>
+            {hasDetails(w) ? (
+              <button type="button" className="work__title work__open" onClick={() => onOpen(i)} aria-haspopup="dialog">
+                {w.title}
+              </button>
+            ) : (
+              <span className="work__title">{w.title}</span>
+            )}
             {w.tag && <span className="work__tag">[{w.tag}]</span>}
           </li>
         ))}

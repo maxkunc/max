@@ -238,7 +238,8 @@ function Editor({ email }) {
 
   const usedPhotos = new Set([
     ...content.hero.photos, ...content.intro.photos.map((p) => p.photo),
-    ...content.gallery.map((g) => g.photo), content.about.photo,
+    ...content.gallery.map((g) => g.photo), content.about.photo, content.contact.photo,
+    ...content.work.items.flatMap((w) => (w.photos || []).map((p) => p.photo)),
   ]);
 
   return (
@@ -385,10 +386,23 @@ function Editor({ email }) {
                         <Check label="Black & white" value={g.mono} onChange={(v) => up({ ...g, mono: v })} />
                       </div>
                       <Field label="Description" value={g.alt} onChange={(v) => up({ ...g, alt: v })} />
+                      <label className="f">
+                        <span className="f__label">Opens project (from Works)</span>
+                        <select value={g.project || ''} onChange={(e) => up({ ...g, project: e.target.value || undefined })}>
+                          <option value="">— not clickable —</option>
+                          {content.work.items.map((w, j) => <option key={j} value={w.title}>{w.title}</option>)}
+                        </select>
+                      </label>
                     </div>
                   </div>
                 )}
               />
+            </Card>
+            <Card title="Contact portrait (shown in black & white)">
+              <div className="grid2">
+                <P value={content.contact.photo || ''} onChange={set(['contact', 'photo'])} />
+                <Field label="Description" value={content.contact.photoAlt} onChange={set(['contact', 'photoAlt'])} />
+              </div>
             </Card>
             <Card title="About photo">
               <div className="grid2">
@@ -401,16 +415,41 @@ function Editor({ email }) {
 
         {tab === 'Works' && (
           <Card title="Selected work list">
+            <p className="note">Works with details or photos open a project page when clicked (on the list and in the gallery).</p>
             <ListEditor
               items={content.work.items}
               onChange={set(['work', 'items'])}
               newItem={() => ({ title: '', tag: '' })}
               addLabel="Add work"
               render={(w, up) => (
-                <div className="grid2">
-                  <Field label="Title" value={w.title} onChange={(v) => up({ ...w, title: v })} />
-                  <Field label="Tag (shown as [TAG])" value={w.tag} onChange={(v) => up({ ...w, tag: v })} />
-                </div>
+                <>
+                  <div className="grid2">
+                    <Field label="Title" value={w.title} onChange={(v) => up({ ...w, title: v })} />
+                    <Field label="Tag (shown as [TAG])" value={w.tag} onChange={(v) => up({ ...w, tag: v })} />
+                  </div>
+                  <details className="more" open={!!(w.description || w.photos?.length)}>
+                    <summary>Project details &amp; photos</summary>
+                    <div className="grid2">
+                      <Field label="Role" value={w.role} onChange={(v) => up({ ...w, role: v })} />
+                      <Field label="Client" value={w.client} onChange={(v) => up({ ...w, client: v })} />
+                      <Field label="Date" value={w.date} onChange={(v) => up({ ...w, date: v })} hint="e.g. 14.2.2026" />
+                      <Field label="Place" value={w.place} onChange={(v) => up({ ...w, place: v })} />
+                    </div>
+                    <Field label="Description" multiline value={w.description} onChange={(v) => up({ ...w, description: v })} />
+                    <ListEditor
+                      items={w.photos || []}
+                      onChange={(v) => up({ ...w, photos: v })}
+                      newItem={() => ({ photo: photoNames[0], alt: '' })}
+                      addLabel="Add photo"
+                      render={(p, upP) => (
+                        <div className="grid2">
+                          <P value={p.photo} onChange={(v) => upP({ ...p, photo: v })} />
+                          <Field label="Description (for screen readers)" value={p.alt} onChange={(v) => upP({ ...p, alt: v })} />
+                        </div>
+                      )}
+                    />
+                  </details>
+                </>
               )}
             />
           </Card>
