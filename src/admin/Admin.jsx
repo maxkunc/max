@@ -142,8 +142,12 @@ function Editor({ email }) {
       if (error) say(`Couldn’t load the live content: ${error.message}`, 'error');
       const current = data || { content: bundled, updated_at: null, updated_by: null };
       setLive(current);
+      // Only reuse a saved draft if it was made on top of what's live now;
+      // otherwise publishing it would undo newer changes.
       const draft = readDraft();
-      setContent(draft?.content || clone(current.content));
+      const fresh = draft?.content && draft.base === (current.updated_at || null);
+      setContent(fresh ? draft.content : clone(current.content));
+      if (draft?.content && !fresh) say('The live site changed since your last unpublished edits, so those old edits were set aside. You are editing the current live version.');
       loadUploads();
     })();
   }, [loadUploads]);
@@ -154,7 +158,7 @@ function Editor({ email }) {
   useEffect(() => {
     if (!content || !live) return;
     try {
-      if (dirty) localStorage.setItem(DRAFT_KEY, JSON.stringify({ content, savedAt: Date.now() }));
+      if (dirty) localStorage.setItem(DRAFT_KEY, JSON.stringify({ content, base: live.updated_at || null, savedAt: Date.now() }));
       else localStorage.removeItem(DRAFT_KEY);
     } catch { /* storage unavailable: edits still work, just not kept on reload */ }
   }, [content, live, dirty]);
