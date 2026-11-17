@@ -37,6 +37,8 @@ export async function fetchLiveContent(timeoutMs = 3000) {
 
 /** Content to render: the admin's draft when previewing, else live, else bundled fallback. */
 export async function loadContent() {
+  // Review builds show the content in the repo, not what's currently live.
+  if (import.meta.env.VITE_USE_BUNDLED_CONTENT === '1') return bundled;
   if (isPreview) {
     const draft = readDraft();
     if (draft?.content) return draft.content;

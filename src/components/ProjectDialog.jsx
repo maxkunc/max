@@ -6,7 +6,7 @@ const num = (n) => String(n).padStart(4, '0');
 const FACTS = [['role', 'ROLE'], ['client', 'CLIENT'], ['date', 'DATE'], ['place', 'PLACE']];
 
 /** Full-screen project view: facts, description and every photo of the project. */
-export default function ProjectDialog({ project, index, onClose }) {
+export default function ProjectDialog({ project, number, onClose }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function ProjectDialog({ project, index, onClose }) {
       {project && (
         <div className="project__inner">
           <div className="project__head">
-            <div className="num">[PROJECT] {num(index + 1)}</div>
+            <div className="num">[PROJECT]{number > 0 ? ` ${num(number)}` : ''}</div>
             <button type="button" className="project__close" onClick={onClose} autoFocus>Close ✕</button>
           </div>
           <h2 id="project-title" className="project__title">{project.title}</h2>

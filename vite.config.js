@@ -9,7 +9,8 @@ export default defineConfig({
   plugins: [react(), imagetools()],
   build: {
     rollupOptions: {
-      input: { main: 'index.html', admin: 'admin/index.html' },
+      // PREVIEW_BUILD=1: public site only (used for review previews before deploying).
+      input: process.env.PREVIEW_BUILD ? { main: 'index.html' } : { main: 'index.html', admin: 'admin/index.html' },
     },
   },
 });

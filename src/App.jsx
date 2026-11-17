@@ -12,6 +12,8 @@ import { isPreview } from './content/index.js';
 export default function App({ content: c }) {
   const [open, setOpen] = useState(-1);
   const close = useCallback(() => setOpen(-1), []);
+  // Position in the visible Selected Work list (0 when the work is hidden from it).
+  const listNumber = (i) => (c.work.items[i]?.hidden ? 0 : c.work.items.slice(0, i + 1).filter((w) => !w.hidden).length);
   const projectIndex = (title) => c.work.items.findIndex((w) => w.title === title && hasDetails(w));
 
   return (
@@ -28,7 +30,7 @@ export default function App({ content: c }) {
       <Gallery gallery={c.gallery} projectIndex={projectIndex} onOpen={setOpen} />
       <About about={c.about} />
       <Contact contact={c.contact} footer={c.footer} />
-      <ProjectDialog project={c.work.items[open]} index={open} onClose={close} />
+      <ProjectDialog project={c.work.items[open]} number={listNumber(open)} onClose={close} />
     </div>
   );
 }

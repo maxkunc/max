@@ -427,6 +427,7 @@ function Editor({ email }) {
                     <Field label="Title" value={w.title} onChange={(v) => up({ ...w, title: v })} />
                     <Field label="Tag (shown as [TAG])" value={w.tag} onChange={(v) => up({ ...w, tag: v })} />
                   </div>
+                  <Check label="Hide from the Selected Work list (gallery card can still open it)" value={w.hidden} onChange={(v) => up({ ...w, hidden: v || undefined })} />
                   <details className="more" open={!!(w.description || w.photos?.length)}>
                     <summary>Project details &amp; photos</summary>
                     <div className="grid2">

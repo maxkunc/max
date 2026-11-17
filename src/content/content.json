@@ -139,7 +139,8 @@
             "photo": "tbass-2-streetmania",
             "alt": "Performer on stage at Streetmania on the Futurum roof"
           }
-        ]
+        ],
+        "hidden": true
       },
       {
         "title": "Popstar Tea × Section",
@@ -257,9 +258,7 @@
         "label": "Studio"
       }
     ],
-    "heading": "Let’s work\ntogether",
-    "photo": "contact-portrait",
-    "photoAlt": "Portrait of Max Kunc"
+    "heading": "Let’s work\ntogether"
   },
   "gallery": [
     {
