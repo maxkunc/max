@@ -81,3 +81,7 @@ export default function ProjectDialog({ project, number, onClose }) {
 
 /** Whether a work item has anything to show in the project view. */
 export const hasDetails = (w) => !!(w && (w.description || w.photos?.length || w.role || w.date || w.place));
+
+/** URL-safe name for a project: "Popstar Tea × Section" → "popstar-tea-section". */
+export const projectSlug = (title = '') => title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
