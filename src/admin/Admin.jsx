@@ -3,6 +3,7 @@ import { bundled, DRAFT_KEY, readDraft } from '../content/index.js';
 import { photoNames } from '../images.js';
 import { PHOTO_BUCKET, UPLOAD_PREFIX, isUpload, uploadId } from '../supabase-config.js';
 import { supabase } from './supabase.js';
+import { OPT_OUT_KEY } from '../analytics.js';
 import { Field, Check, PhotoSelect, ListEditor, thumb } from './fields.jsx';
 
 const TABS = ['Texts', 'Photos', 'Works', 'Services', 'Contacts', 'Publish'];
@@ -519,6 +520,10 @@ function Editor({ email }) {
                 <input ref={importRef} type="file" accept="application/json,.json" hidden onChange={onImport} />
               </div>
             </Card>
+            <Card title="Visitor stats (Umami)">
+              <p className="note">Visitor numbers are on your Umami dashboard at cloud.umami.is. Switch this on in every browser you use so your own visits aren’t counted.</p>
+              <NoTrack />
+            </Card>
             <Card title="Account">
               <p className="note">Signed in as <strong>{email}</strong>.</p>
               <div className="row"><button type="button" className="btn" onClick={() => supabase.auth.signOut()}>Sign out</button></div>
@@ -528,6 +533,16 @@ function Editor({ email }) {
       </main>
     </div>
   );
+}
+
+function NoTrack() {
+  const read = () => { try { return localStorage.getItem(OPT_OUT_KEY) === '1'; } catch { return false; } };
+  const [off, setOff] = useState(read);
+  const toggle = () => {
+    try { off ? localStorage.removeItem(OPT_OUT_KEY) : localStorage.setItem(OPT_OUT_KEY, '1'); } catch { /* ignore */ }
+    setOff(read());
+  };
+  return <Check label="Don’t count my visits in this browser" value={off} onChange={toggle} />;
 }
 
 function Card({ title, action, children }) {
