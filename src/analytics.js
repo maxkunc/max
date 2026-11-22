@@ -22,6 +22,8 @@ export function startAnalytics() {
   s.src = SCRIPT;
   s.defer = true;
   s.dataset.websiteId = WEBSITE_ID;
+  // Count only the real site (not local builds or other copies), e.g. "maxkunc.github.io".
+  try { s.dataset.domains = new URL(import.meta.env.VITE_SITE_URL).hostname; } catch { /* no restriction */ }
   s.onload = () => {
     const q = queue;
     queue = null;
