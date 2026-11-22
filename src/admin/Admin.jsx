@@ -4,9 +4,8 @@ import { photoNames } from '../images.js';
 import { PHOTO_BUCKET, UPLOAD_PREFIX, isUpload, uploadId } from '../supabase-config.js';
 import { supabase } from './supabase.js';
 import { Field, Check, PhotoSelect, ListEditor, thumb } from './fields.jsx';
-import Stats from './Stats.jsx';
 
-const TABS = ['Stats', 'Texts', 'Photos', 'Works', 'Services', 'Contacts', 'Publish'];
+const TABS = ['Texts', 'Photos', 'Works', 'Services', 'Contacts', 'Publish'];
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -123,7 +122,7 @@ function Editor({ email }) {
   const [live, setLive] = useState(null); // { content, updated_at, updated_by }
   const [content, setContent] = useState(null);
   const [uploads, setUploads] = useState([]);
-  const [tab, setTab] = useState(() => { try { return sessionStorage.getItem('mk-admin-tab') || 'Stats'; } catch { return 'Texts'; } });
+  const [tab, setTab] = useState(() => { try { return sessionStorage.getItem('mk-admin-tab') || 'Texts'; } catch { return 'Texts'; } });
   const [status, setStatus] = useState(null); // { kind: 'ok' | 'error', text }
   const [busy, setBusy] = useState(false);
   const importRef = useRef(null);
@@ -274,8 +273,6 @@ function Editor({ email }) {
       </nav>
 
       <main className="admin__main">
-        {tab === 'Stats' && <Stats />}
-
         {tab === 'Texts' && (
           <>
             <Card title="Hero">
