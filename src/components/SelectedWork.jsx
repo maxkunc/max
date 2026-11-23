@@ -16,6 +16,7 @@ export default function SelectedWork({ work, onOpen }) {
         <div className="work__facts">
           <div>[TOOLS]</div><div>{work.tools}</div>
           <div>[BASE]</div><div>{work.base}</div>
+          {work.area && (<><div>[AREA]</div><div>{work.area}</div></>)}
         </div>
       </div>
       <ol className="work__list">

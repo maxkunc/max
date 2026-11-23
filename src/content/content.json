@@ -15,8 +15,10 @@
     "tagline": "Filmmaker & photographer\nbased in Hradec Králové"
   },
   "work": {
-    "cta": "Reach me →",
+    "tools": "Sony ZV-E10 II · DaVinci Resolve · Adobe Lightroom",
     "base": "Hradec Králové, CZ",
+    "area": "Hradec Králové · Prague · elsewhere with travel covered",
+    "cta": "Reach me →",
     "items": [
       {
         "tag": "Camera",
@@ -164,8 +166,7 @@
           }
         ]
       }
-    ],
-    "tools": "Sony ZV-E10 II · DaVinci Resolve · Adobe Lightroom"
+    ]
   },
   "about": {
     "role": "Filmmaker, photographer\n& designer",

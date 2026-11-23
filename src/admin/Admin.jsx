@@ -293,6 +293,7 @@ function Editor({ email }) {
             <Card title="Selected work">
               <Field label="[TOOLS]" value={content.work.tools} onChange={set(['work', 'tools'])} />
               <Field label="[BASE]" value={content.work.base} onChange={set(['work', 'base'])} />
+              <Field label="[AREA] (where you work)" value={content.work.area} onChange={set(['work', 'area'])} />
               <Field label="Last line (links to contact)" value={content.work.cta} onChange={set(['work', 'cta'])} />
             </Card>
             <Card title="About">

@@ -16,7 +16,7 @@ export default function App({ content: c }) {
     const m = /^#project-(.+)$/.exec(hash || '');
     return m ? c.work.items.findIndex((w) => hasDetails(w) && projectSlug(w.title) === decodeURIComponent(m[1])) : -1;
   }, [c]);
-  const [open, setOpenState] = useState(() => findBySlug(window.location.hash));
+  const [open, setOpenState] = useState(-1);
   const setHash = (h) => window.history.replaceState(null, '', h || window.location.pathname + window.location.search);
   const setOpen = useCallback((i, from = 'list') => {
     setOpenState(i);
@@ -28,6 +28,7 @@ export default function App({ content: c }) {
   const close = useCallback(() => { setOpenState(-1); if (/^#project-/.test(window.location.hash)) setHash(''); }, []);
   useEffect(() => {
     const onHash = () => { const i = findBySlug(window.location.hash); if (i >= 0) setOpenState(i); };
+    onHash(); // a shared link like …/#project-lunetic opens that project
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, [findBySlug]);
